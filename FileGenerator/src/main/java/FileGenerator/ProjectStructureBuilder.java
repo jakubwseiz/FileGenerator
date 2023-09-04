@@ -9,12 +9,14 @@ import java.nio.file.StandardOpenOption;
 
 import static FileGenerator.FilesContent.ControllerContent.getControllerContent;
 import static FileGenerator.FilesContent.ModelContent.getModelContent;
+import static FileGenerator.FilesContent.ModelItemsContent.getModelItemsContent;
+import static FileGenerator.FilesContent.RepositoryContent.getRepositoryContent;
 import static FileGenerator.FilesContent.ServiceContent.getServiceContent;
 
 public class ProjectStructureBuilder {
     public static void main(String[] args) {
         // Ścieżka do miejsca, gdzie chcesz zapisać struktury projektu
-        String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\output"; // Zmień na odpowiednią ścieżkę
+        String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\output";
 
         try {
             // Tworzenie katalogu głównego projektu
@@ -29,6 +31,7 @@ public class ProjectStructureBuilder {
             createDirectory(projectPath + "/src/main/java/com/mycompany/controller");
             createDirectory(projectPath + "/src/main/java/com/mycompany/model");
             createDirectory(projectPath + "/src/main/java/com/mycompany/service");
+            createDirectory(projectPath + "/src/main/java/com/mycompany/repository");
             createDirectory(projectPath + "/src/main/resources");
             createDirectory(projectPath + "/src/main/resources/static");
             createDirectory(projectPath + "/src/main/resources/templates");
@@ -39,7 +42,10 @@ public class ProjectStructureBuilder {
             // Dodawanie klas do odpowiednich katalogów
             createJavaClass(projectPath + "/src/main/java/com/mycompany/controller", "ProductController", getControllerContent());
             createJavaClass(projectPath + "/src/main/java/com/mycompany/model", "Product", getModelContent());
+            createJavaClass(projectPath + "/src/main/java/com/mycompany/model", "ProductItems", getModelItemsContent());
             createJavaClass(projectPath + "/src/main/java/com/mycompany/service", "ProductService", getServiceContent());
+            createJavaClass(projectPath + "/src/main/java/com/mycompany/repository", "ProductRepository", getRepositoryContent());
+
 
             System.out.println("Struktura projektu została zbudowana w: " + projectPath);
         } catch (IOException e) {

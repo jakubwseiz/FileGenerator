@@ -6,12 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import FileGenerator.Generators.PomXmlGenerator;
 
 import static FileGenerator.FilesContent.ControllerContent.getControllerContent;
 import static FileGenerator.FilesContent.ModelContent.getModelContent;
 import static FileGenerator.FilesContent.ModelItemsContent.getModelItemsContent;
 import static FileGenerator.FilesContent.RepositoryContent.getRepositoryContent;
 import static FileGenerator.FilesContent.ServiceContent.getServiceContent;
+
 
 public class ProjectStructureBuilder {
     public static void main(String[] args) {
@@ -51,6 +53,7 @@ public class ProjectStructureBuilder {
         } catch (IOException e) {
             System.err.println("Błąd podczas tworzenia struktury projektu: " + e.getMessage());
         }
+        PomXmlGenerator.generatePomXml();
     }
 
     private static void createDirectory(String directoryPath) throws IOException {
@@ -72,4 +75,5 @@ public class ProjectStructureBuilder {
             System.out.println("Plik '" + className + ".java' już istnieje w katalogu '" + directoryPath + "', nadpisuję.");
         }
     }
+
 }

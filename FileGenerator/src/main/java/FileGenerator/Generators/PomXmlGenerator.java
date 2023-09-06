@@ -9,7 +9,7 @@ public class PomXmlGenerator {
 
     public static void generatePomXml() {
         // Ścieżka do pliku pom.xml
-        Path pomXmlPath = Path.of("C:\\Users\\Kozlos\\Desktop\\Inżynierka\\output\\pom.xml");
+        Path pomXmlPath = Path.of("C:\\Users\\Kozlos\\Desktop\\Inżynierka\\NazwaProjektu\\pom.xml");
 
         // Treść pliku pom.xml
         String pomXmlContent =

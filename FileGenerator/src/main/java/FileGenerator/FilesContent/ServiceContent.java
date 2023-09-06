@@ -3,14 +3,14 @@ package FileGenerator.FilesContent;
 public class ServiceContent {
 
     public static String getServiceContent() {
-        return "package com.mycompany.service;\n"
+        return "package com.myCompany.ProjectName.Service;\n"
                 + "\n"
-                + "import com.example.ThymeleafCRUD.Entities.Invoice;\n"
-                + "import com.example.ThymeleafCRUD.Entities.InvoiceItem;\n"
-                + "import com.mycomapny.repository.InvoiceItemRepository;\n"
-                + "import com.mycomapny.repository.InvoiceRepository;\n"
-                + "import org.springframework.beans.factory.annotation.Autowired;\n"
-                + "import org.springframework.stereotype.Service;\n"
+                + "import com.myCompany.ProjectName.Models.Invoice;\n"
+                + "import com.myCompany.ProjectName.Models.InvoiceItem;\n"
+                + "import com.myCompany.ProjectName.Repository.InvoiceItemRepository;\n"
+                + "import com.myCompany.ProjectName.Repository.InvoiceRepository;\n"
+                + "import org.springframework.beans.factory.annotation.*;\n"
+                + "import org.springframework.stereotype.Service;;\n"
                 + "\n"
                 + "import java.util.List;\n"
                 + "\n"

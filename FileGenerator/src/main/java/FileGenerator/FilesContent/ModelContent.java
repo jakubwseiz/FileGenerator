@@ -3,9 +3,11 @@ package FileGenerator.FilesContent;
 public class ModelContent {
 
     public static String getModelContent() {
-        return "package com.mycompany.model;\n"
+        return "package com.myCompany.ProjectName.Models;\n"
                 + "\n"
                 + "import com.fasterxml.jackson.annotation.JsonManagedReference;\n"
+                + "import jakarta.persistence.Entity;\n"
+                + "import org.antlr.v4.runtime.misc.NotNull;\n"
                 + "import org.springframework.format.annotation.DateTimeFormat;\n"
                 + "\n"
                 + "import jakarta.persistence.*;\n"

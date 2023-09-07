@@ -15,6 +15,10 @@ import static FileGenerator.FilesContent.RepositoryContent.getRepositoryContent;
 import static FileGenerator.FilesContent.ProductItemRepositoryContent.getProductItemRepositoryContent;
 import static FileGenerator.FilesContent.ServiceContent.getServiceContent;
 import static FileGenerator.FilesContent.StartContent.getStartContent;
+import static FileGenerator.TempaltesContent.ProductTemplate.getInvoiceTemplateContent;
+import static FileGenerator.TempaltesContent.ListOfProductsTemplate.getInvoicesTemplateContent;
+import static FileGenerator.TempaltesContent.AddProductTemplate.getAddInvoiceTemplateContent;
+import static FileGenerator.TempaltesContent.UpdateProductTemplate.getUpdateInvoiceTemplateContent;
 
 
 public class ProjectStructureBuilder {
@@ -52,6 +56,11 @@ public class ProjectStructureBuilder {
             createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Repository", "InvoiceItemRepository", getProductItemRepositoryContent());
             createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName", "Start", getStartContent());
 
+            createHtmlFile(projectPath + "/src/main/resources/templates","invoice", getInvoiceTemplateContent());
+            createHtmlFile(projectPath + "/src/main/resources/templates","invoices", getInvoicesTemplateContent());
+            createHtmlFile(projectPath + "/src/main/resources/templates","addInvoice", getAddInvoiceTemplateContent());
+            createHtmlFile(projectPath + "/src/main/resources/templates","updateInvoice", getUpdateInvoiceTemplateContent());
+
 
             System.out.println("Struktura projektu została zbudowana w: " + projectPath);
         } catch (IOException e) {
@@ -77,6 +86,16 @@ public class ProjectStructureBuilder {
         } catch (FileAlreadyExistsException e) {
             // Obsługuje wyjątek, jeśli plik już istnieje
             System.out.println("Plik '" + className + ".java' już istnieje w katalogu '" + directoryPath + "', nadpisuję.");
+        }
+    }
+
+    private static void createHtmlFile(String directoryPath, String fileName, String content) throws IOException {
+        Path classPath = Paths.get(directoryPath + "/" + fileName + ".html");
+        try {
+            Files.write(classPath, content.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (FileAlreadyExistsException e) {
+            // Obsługuje wyjątek, jeśli plik już istnieje
+            System.out.println("Plik '" + fileName + ".html' już istnieje w katalogu '" + directoryPath + "', nadpisuję.");
         }
     }
 

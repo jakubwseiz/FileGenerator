@@ -2,7 +2,7 @@ package FileGenerator.FilesContent;
 
 public class ModelItemsContent {
     public static String getModelItemsContent() {
-        return "package com.mycompany.model;\n"
+        return "package com.myCompany.ProjectName.Models;\n"
                 + "\n"
                 + "import com.fasterxml.jackson.annotation.JsonBackReference;\n"
                 + "import jakarta.persistence.*;\n"

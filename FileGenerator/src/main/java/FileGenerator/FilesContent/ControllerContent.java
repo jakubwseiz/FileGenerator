@@ -3,11 +3,11 @@ package FileGenerator.FilesContent;
 public class ControllerContent {
 
     public static String getControllerContent() {
-        return "package com.mycompany.controller;\n"
+        return "package com.myCompany.ProjectName.Controllers;\n"
                 + "\n"
-                + "import com.example.ThymeleafCRUD.Entities.Invoice;\n"
-                + "import com.example.ThymeleafCRUD.Entities.InvoiceItem;\n"
-                + "import com.example.ThymeleafCRUD.Services.InvoiceService;\n"
+                + "import com.myCompany.ProjectName.Models.Invoice;\n"
+                + "import com.myCompany.ProjectName.Models.InvoiceItem;\n"
+                + "import com.myCompany.ProjectName.Service.InvoiceService;\n"
                 + "import org.springframework.beans.factory.annotation.Autowired;\n"
                 + "import org.springframework.stereotype.Controller;\n"
                 + "import org.springframework.ui.Model;\n"

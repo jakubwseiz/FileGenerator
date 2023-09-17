@@ -7,9 +7,9 @@ import java.nio.file.StandardOpenOption;
 
 public class PomXmlGenerator {
 
-    public static void generatePomXml() {
+    public static void generatePomXml(String projectPath) {
         // Ścieżka do pliku pom.xml
-        Path pomXmlPath = Path.of("C:\\Users\\Kozlos\\Desktop\\Inżynierka\\NazwaProjektu\\pom.xml");
+        Path pomXmlPath = Path.of(projectPath + "\\pom.xml");
 
         // Treść pliku pom.xml
         String pomXmlContent =

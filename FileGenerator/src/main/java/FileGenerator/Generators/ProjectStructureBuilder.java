@@ -1,4 +1,4 @@
-package FileGenerator;
+package FileGenerator.Generators;
 
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import FileGenerator.Generators.PomXmlGenerator;
 
 import static FileGenerator.FilesContent.ControllerContent.getControllerContent;
 import static FileGenerator.FilesContent.ModelContent.getModelContent;
@@ -22,9 +21,9 @@ import static FileGenerator.TempaltesContent.UpdateProductTemplate.getUpdateInvo
 
 
 public class ProjectStructureBuilder {
-    public static void main(String[] args) {
+    public static void buildProjectStructure(String projectPath) {
 
-        String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\NazwaProjektu";
+        //String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\NazwaProjektu";
 
         try {
             // Tworzenie katalogu głównego projektu
@@ -66,7 +65,7 @@ public class ProjectStructureBuilder {
         } catch (IOException e) {
             System.err.println("Błąd podczas tworzenia struktury projektu: " + e.getMessage());
         }
-        PomXmlGenerator.generatePomXml();
+        PomXmlGenerator.generatePomXml(projectPath);
     }
 
     private static void createDirectory(String directoryPath) throws IOException {

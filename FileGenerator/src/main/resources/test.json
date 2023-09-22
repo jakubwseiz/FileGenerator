@@ -1,0 +1,22 @@
+{
+    
+    "projectName": "MojaAplikacja",
+    "entityName": "Produkt",
+    "entityAmount": 123,
+    "Date": "1234-33-11",
+    "fields": [
+      {
+        "fieldName": "nazwa",
+        "fieldType": "String"
+      },
+      {
+        "fieldName": "ilość",
+        "fieldType": "int"
+      },
+      {
+        "fieldName": "koszt",
+        "fieldType": "double"
+      }
+    ]
+  }
+  

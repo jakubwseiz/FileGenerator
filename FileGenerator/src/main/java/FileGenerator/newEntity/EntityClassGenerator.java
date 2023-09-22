@@ -8,8 +8,6 @@ import java.util.Map;
 
 public class EntityClassGenerator {
 
-    private static int index;
-
     public static String generateClass(JSONObject jsonObject) {
 
         StringBuilder content = new StringBuilder();

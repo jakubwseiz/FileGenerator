@@ -6,6 +6,8 @@ import org.json.simple.JSONObject;
 
 import java.util.Map;
 
+import static FileGenerator.newEntity.EntityImportGenerator.generateEntityImportContent;
+
 public class EntityClassGenerator {
 
     public static String generateClass(JSONObject jsonObject) {
@@ -28,5 +30,16 @@ public class EntityClassGenerator {
         }
 
         return content.toString();
+    }
+
+    public static String generateRealClass(JSONObject jsonObject) {
+
+        StringBuilder classContent = new StringBuilder();
+        classContent.append("package com.example.").append(jsonObject.get("projectName")).append(".Entities;")
+                .append("\r\n")
+                .append(generateEntityImportContent());
+
+        System.out.println(classContent.toString());
+        return classContent.toString();
     }
 }

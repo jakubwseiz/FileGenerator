@@ -9,6 +9,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
+import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
 
 
 public class MainJsonImport {
@@ -41,6 +42,8 @@ public class MainJsonImport {
         }
 
         generateClass(jsonObject);
+
+        generateRealClass(jsonObject);
 
     }
 }

@@ -1,8 +1,8 @@
 {
-  "projectName": "MyProject",
+  "projectName": "Mój Projekt",
   "classes": [
     {
-      "name": "Invoice",
+      "name": "Invoices",
       "properties": [
         {
           "name": "invoiceName",
@@ -36,7 +36,7 @@
         },
         {
           "name": "invoice",
-          "type": "Invoice"
+          "type":
         }
       ]
     }

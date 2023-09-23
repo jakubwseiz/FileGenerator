@@ -1,7 +1,13 @@
 package FileGenerator;
 
+import java.io.File;
 import java.io.FileReader;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.io.IOException;
 import org.json.simple.JSONObject;
@@ -17,8 +23,9 @@ public class MainJsonImport {
         if (args.length != 1) {
             System.out.println("Użycie: java ImportJSONFile <ścieżka_do_pliku_JSON>");
         }
-
-        String filePath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\test.json";
+//        String absolutePath = file.getAbsolutePath();
+        Path root = Paths.get("FileGenerator/src/main/resources/test.json").normalize().toAbsolutePath();
+        String filePath = root.toString(); //"C:\\Users\\Kozlos\\Desktop\\Inżynierka\\test.json";
 
         JSONObject jsonObject = null;
         try {
@@ -41,10 +48,10 @@ public class MainJsonImport {
             System.out.println("Błąd podczas importowania pliku JSON: " + e.getMessage());
         }
 
-        generateClass(jsonObject);
-
+        //generateClass(jsonObject);
+        System.out.println("--------- Generating classes ---------");
         generateRealClass(jsonObject);
-
+        System.out.println("--------- Finished generating classes ---------");
     }
 }
 

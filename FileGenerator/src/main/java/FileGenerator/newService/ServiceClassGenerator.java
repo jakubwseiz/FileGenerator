@@ -19,10 +19,6 @@ public class ServiceClassGenerator {
         private static final char METHOD_OPEN = '(';
         private static final char METHOD_CLOSED = ')';
 
-        public static StringBuilder gettersAndSetters;
-        public static StringBuilder properties;
-
-        public static HashMap<String,String> fieldMap = new HashMap<>();
 
         @SneakyThrows
         public static String generateServiceClass(JSONObject jsonObject) {
@@ -149,4 +145,6 @@ public class ServiceClassGenerator {
                         .append(DOUBLE_NEW_LINE);
                 return stringBuilder.toString();
         }
+
+        //TODO: second class service part
 }

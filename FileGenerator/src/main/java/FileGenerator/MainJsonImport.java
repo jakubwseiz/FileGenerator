@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import static FileGenerator.Repository.RepositryClassGenerator.generateRepositoryClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
 import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
@@ -49,16 +50,20 @@ public class MainJsonImport {
             System.out.println("Błąd podczas importowania pliku JSON: " + e.getMessage());
         }
 
-        //generateClass(jsonObject);
-        System.out.println("--------- Generating classes ---------");
-        generateRealClass(jsonObject);
-        System.out.println("--------- Finished generating classes ---------");
+//        //generateClass(jsonObject);
+//        System.out.println("--------- Generating classes ---------");
+//        generateRealClass(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+//
+//        //generate Service class
+//        System.out.println("--------- Generating classes ---------");
+//        generateServiceClass(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
 
-        //generate Service class
+        //generate repository class
         System.out.println("--------- Generating classes ---------");
-        generateServiceClass(jsonObject);
+        generateRepositoryClass(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
-
     }
 }
 

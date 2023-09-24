@@ -35,7 +35,7 @@ public class EntityClassGenerator {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder
-                .append("package ").append(packagename).append(END_STATEMENT)
+                .append(packagename).append(END_STATEMENT)
                 .append(DOUBLE_NEW_LINE)
                 .append("%s") //import statements
                 .append(DOUBLE_NEW_LINE)
@@ -172,7 +172,7 @@ public class EntityClassGenerator {
     }
 
     public static String generateClass(String projectName, String className, JSONArray jsonProperties) {
-        String packageName = "package com.example."+ projectName + ".Entities;";
+        String packageName = "package com.example."+ projectName + ".Entities";
         String classDeclaration = declareClass(className, packageName);
         addIdProperty();
         generateProperties(jsonProperties,className);

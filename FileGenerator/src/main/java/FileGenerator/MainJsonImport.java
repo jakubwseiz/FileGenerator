@@ -24,7 +24,7 @@ public class MainJsonImport {
             System.out.println("Użycie: java ImportJSONFile <ścieżka_do_pliku_JSON>");
         }
 //        String absolutePath = file.getAbsolutePath();
-        Path root = Paths.get("FileGenerator/src/main/resources/test.json").normalize().toAbsolutePath();
+        Path root = Paths.get("src/main/resources/test.json").normalize().toAbsolutePath();
         String filePath = root.toString(); //"C:\\Users\\Kozlos\\Desktop\\Inżynierka\\test.json";
 
         JSONObject jsonObject = null;
@@ -52,6 +52,10 @@ public class MainJsonImport {
         System.out.println("--------- Generating classes ---------");
         generateRealClass(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
+
+        //generate Service class
+        System.out.println("--------- Generating classes ---------");
+
     }
 }
 

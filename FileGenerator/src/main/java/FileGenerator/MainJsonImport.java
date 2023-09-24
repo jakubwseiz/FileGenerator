@@ -16,6 +16,7 @@ import org.json.simple.parser.ParseException;
 
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
+import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
 
 
 public class MainJsonImport {
@@ -24,7 +25,7 @@ public class MainJsonImport {
             System.out.println("Użycie: java ImportJSONFile <ścieżka_do_pliku_JSON>");
         }
 //        String absolutePath = file.getAbsolutePath();
-        Path root = Paths.get("src/main/resources/test.json").normalize().toAbsolutePath();
+        Path root = Paths.get("FileGenerator/src/main/resources/test.json").normalize().toAbsolutePath();
         String filePath = root.toString(); //"C:\\Users\\Kozlos\\Desktop\\Inżynierka\\test.json";
 
         JSONObject jsonObject = null;
@@ -55,6 +56,8 @@ public class MainJsonImport {
 
         //generate Service class
         System.out.println("--------- Generating classes ---------");
+        generateServiceClass(jsonObject);
+        System.out.println("--------- Finished generating classes ---------");
 
     }
 }

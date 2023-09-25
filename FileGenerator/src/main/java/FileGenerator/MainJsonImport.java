@@ -18,6 +18,7 @@ import static FileGenerator.Repository.RepositryClassGenerator.generateRepositor
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
 import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
+import static FileGenerator.newTemplatesContent.ProductTemplateGenerator.generateProductTemplate;
 
 
 public class MainJsonImport {
@@ -60,9 +61,14 @@ public class MainJsonImport {
 //        generateServiceClass(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 
-        //generate repository class
+//        //generate repository class
+//        System.out.println("--------- Generating classes ---------");
+//        generateRepositoryClass(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+
+        //generate templates class
         System.out.println("--------- Generating classes ---------");
-        generateRepositoryClass(jsonObject);
+        generateProductTemplate(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
     }
 }

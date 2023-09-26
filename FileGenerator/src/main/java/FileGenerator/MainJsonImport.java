@@ -15,6 +15,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import static FileGenerator.Repository.RepositryClassGenerator.generateRepositoryClass;
+import static FileGenerator.newController.ControllerClassGenerator.generateControllerClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
 import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
@@ -66,9 +67,13 @@ public class MainJsonImport {
 //        generateRepositoryClass(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 
-        //generate templates class
+//        //generate templates class
+//        System.out.println("--------- Generating classes ---------");
+//        generateProductTemplate(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+
         System.out.println("--------- Generating classes ---------");
-        generateProductTemplate(jsonObject);
+        generateControllerClass(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
     }
 }

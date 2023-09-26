@@ -90,9 +90,9 @@ public class ProductTemplateGenerator {
 
         stringBuilder
                 .append(NEW_LINE)
-                .append("<h2>").append(className).append("s").append("</h2>")
+                .append("<h2>").append(secondClassName).append("s").append("</h2>")
                 .append(NEW_LINE)
-                .append(generateTableForSecondClass(secondProperties, className,secondClassName));
+                .append(generateTableForSecondClass(properties, secondProperties, className,secondClassName));
 
         return stringBuilder.toString();
     }
@@ -112,6 +112,7 @@ public class ProductTemplateGenerator {
                 continue;
             } else {
                 stringBuilder
+                        .append(NEW_LINE).append(SPACE)
                         .append("<tr>")
                         .append(NEW_LINE).append(BIG_SPACE)
                         .append("<th>").append(properyJSONObject.get("name")).append(":</th>")
@@ -133,9 +134,11 @@ public class ProductTemplateGenerator {
         return property.substring(0, 1).toLowerCase() + property.substring(1);
     }
 
-    public static String generateTableForSecondClass(JSONArray secondProperties, String className ,String secondClassName) {
+    public static String generateTableForSecondClass( JSONArray properties, JSONArray secondProperties, String className ,String secondClassName) {
 
         StringBuilder stringBuilder = new StringBuilder();
+        JSONObject lastObject = (JSONObject) properties.get(properties.size() - 1);
+
 
         stringBuilder
                 .append("<table class=\"table\">")
@@ -156,15 +159,46 @@ public class ProductTemplateGenerator {
                     .append("<th>").append(propertyName).append("</th>");
         }
 
+
         stringBuilder
                 .append(NEW_LINE).append(SPACE)
                 .append("</tr>")
                 .append(NEW_LINE).append(SPACE)
                 .append("</thead>")
                 .append(NEW_LINE).append(SPACE)
-                .append("<tbody>");
+                .append("<tbody>")
+                .append(NEW_LINE).append(SPACE);
 
+        for (Object c : properties) {
+            JSONObject properyJSONObject = (JSONObject) c;
+            String propertyType = properyJSONObject.get("type").toString();
 
+            if (Objects.equals(propertyType, "List<" + secondClassName + ">")) {
+
+                stringBuilder
+                        .append("<tr th:each=\"item : ${").append(firstCharToLowerCase(className)).append(".").append(lastObject.get("name")).append("}\">")
+                        .append(NEW_LINE).append(BIG_SPACE);
+
+                for (Object d : secondProperties) {
+                    JSONObject secondProperyJSONObject = (JSONObject) d;
+                    String secondPropertyName = secondProperyJSONObject.get("name").toString();
+
+                    if (Objects.equals(secondPropertyName, firstCharToLowerCase(className))) {
+                        continue;
+                    }
+                    stringBuilder
+                            .append(NEW_LINE).append(BIG_SPACE)
+                            .append("<td:text=\"$item.").append(secondPropertyName).append("}\"></td>");
+                }
+            }
+        }
+        stringBuilder
+                .append(NEW_LINE).append(SPACE)
+                .append("</tr>")
+                .append(NEW_LINE).append(SPACE)
+                .append("</tbody>")
+                .append(NEW_LINE)
+                .append("</table>");
 
         return stringBuilder.toString();
     }

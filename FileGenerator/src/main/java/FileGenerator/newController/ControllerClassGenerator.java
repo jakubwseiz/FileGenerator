@@ -99,14 +99,20 @@ public class ControllerClassGenerator {
                 .append(DOUBLE_NEW_LINE)
                 .append(generateGetProductByIdEndpoint(firstClassName))
                 .append(DOUBLE_NEW_LINE)
-                .append(generateShowUpdateProductFormEndpoint(firstClassName, secondClassName))
+                .append(generateShowUpdateProductFormEndpoint(classesList, firstClassName, secondClassName))
+                .append(DOUBLE_NEW_LINE)
+                .append(generateUpdateProduct(firstClassName, secondClassName))
                 .append(DOUBLE_NEW_LINE);
+
 
         return stringBuilder.toString();
     }
 
     public static String firstCharToLowerCase(String property) {
         return property.substring(0, 1).toLowerCase() + property.substring(1);
+    }
+    public static String firstCharToUpperCase(String property) {
+        return property.substring(0, 1).toUpperCase() + property.substring(1);
     }
 
     public static String generateGetAllProductEndpoint(String firstClassName) {
@@ -145,8 +151,20 @@ public class ControllerClassGenerator {
         return stringBuilder.toString();
     }
 
-    public static String generateShowUpdateProductFormEndpoint(String firstClassName, String secondClassName) {
+    public static String generateShowUpdateProductFormEndpoint(JSONArray classesList, String firstClassName, String secondClassName) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        String listName = null;
+
+        JSONObject firstClass = (JSONObject) classesList.get(0);
+        JSONArray properties =  (JSONArray) firstClass.get("properties");
+
+        for (Object c : properties) {
+            JSONObject propertyJSONObject = (JSONObject) c;
+            if (propertyJSONObject.containsKey("mapField")) {
+                listName = (String) propertyJSONObject.get("name");
+            }
+        }
 
         stringBuilder
                 .append("@GetMapping(\"/update/{id}\")")
@@ -155,7 +173,29 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append(firstClassName).append(" update").append(firstClassName).append(" = ").append(firstCharToLowerCase(firstClassName)).append("Service.get").append(firstClassName).append("ById(id);")
                 .append(NEW_LINE)
-                .append("List<").append(secondClassName).append("> items = update").append(firstClassName).append("????");
+                .append("List<").append(secondClassName).append("> items = update").append(firstClassName).append(".get").append(firstCharToUpperCase(listName)).append("()")
+                .append(DOUBLE_NEW_LINE)
+                .append("model.addAttribute(").append("\"update").append(firstClassName).append("\", update").append(firstClassName).append(")").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("model.addAttribute(\"").append(listName).append("\", ").append(listName).append(")").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("model.addAttribute(\"").append(listName).append("Size").append("\", ").append(listName).append(".size())").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("return \"update").append(firstClassName).append("\"").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append(BLOCK_CLOSED);
+
+        return stringBuilder.toString();
+    }
+
+    public static String generateUpdateProduct(String firstClassName, String secondClassName) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("@PostMapping(\"/update/{id}\")")
+                .append(NEW_LINE)
+                .append("public String update").append(firstClassName).append("(@PathVariable Long id, @ModelAttribute(\"update").append(firstClassName).append("\") ").append(firstClassName).append(firstCharToLowerCase(firstClassName)).append("Data) {")
+                .append(NEW_LINE);
 
         return stringBuilder.toString();
     }

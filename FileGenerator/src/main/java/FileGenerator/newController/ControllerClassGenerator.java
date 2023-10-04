@@ -101,7 +101,7 @@ public class ControllerClassGenerator {
                 .append(DOUBLE_NEW_LINE)
                 .append(generateShowUpdateProductFormEndpoint(classesList, firstClassName, secondClassName))
                 .append(DOUBLE_NEW_LINE)
-                .append(generateUpdateProduct(firstClassName, secondClassName))
+                .append(generateUpdateProduct(firstClassName, secondClassName, firstClassJSONObject, secondClassJSONObject))
                 .append(DOUBLE_NEW_LINE);
 
 
@@ -173,7 +173,7 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append(firstClassName).append(" update").append(firstClassName).append(" = ").append(firstCharToLowerCase(firstClassName)).append("Service.get").append(firstClassName).append("ById(id);")
                 .append(NEW_LINE)
-                .append("List<").append(secondClassName).append("> items = update").append(firstClassName).append(".get").append(firstCharToUpperCase(listName)).append("()")
+                .append("List<").append(secondClassName).append("> items = update").append(firstClassName).append(".get").append(firstCharToUpperCase(listName)).append("()").append(END_STATEMENT)
                 .append(DOUBLE_NEW_LINE)
                 .append("model.addAttribute(").append("\"update").append(firstClassName).append("\", update").append(firstClassName).append(")").append(END_STATEMENT)
                 .append(NEW_LINE)
@@ -188,13 +188,49 @@ public class ControllerClassGenerator {
         return stringBuilder.toString();
     }
 
-    public static String generateUpdateProduct(String firstClassName, String secondClassName) {
+    public static String generateUpdateProduct(String firstClassName, String secondClassName, JSONObject firstClassJSONObject, JSONObject secondClassJSONObject) {
         StringBuilder stringBuilder = new StringBuilder();
+        JSONArray firstClassProperties =  (JSONArray) firstClassJSONObject.get("properties");
+        JSONArray secondClassProperties =  (JSONArray) secondClassJSONObject.get("properties");
+        String listName = null;
+        JSONObject singleProperty = (JSONObject) secondClassProperties.get(0);
+        String firstPropertyNameInSecondClass = (String) singleProperty.get("name");
 
         stringBuilder
                 .append("@PostMapping(\"/update/{id}\")")
                 .append(NEW_LINE)
-                .append("public String update").append(firstClassName).append("(@PathVariable Long id, @ModelAttribute(\"update").append(firstClassName).append("\") ").append(firstClassName).append(firstCharToLowerCase(firstClassName)).append("Data) {")
+                .append("public String update").append(firstClassName).append("(@PathVariable Long id, @ModelAttribute(\"update").append(firstClassName).append("\") ").append(firstClassName).append(SPACE).append(firstCharToLowerCase(firstClassName)).append("Data) {")
+                .append(DOUBLE_NEW_LINE)
+                .append(firstClassName).append(" update").append(firstClassName).append(" = new ").append(firstClassName).append("()").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("updated").append(firstClassName).append(".setId(id);")
+                .append(NEW_LINE);
+
+        for (Object o : firstClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+
+            if (classProperty.containsKey("mapField")) {
+                listName = (String) classProperty.get("name");
+                continue;
+            }
+            stringBuilder
+                    .append("updated").append(firstClassName).append(".set").append(firstCharToUpperCase(propertyName)).append("(").append((firstCharToLowerCase(firstClassName))).append("Data.get").append(firstCharToUpperCase(propertyName)).append("())").append(END_STATEMENT)
+                    .append(NEW_LINE);
+        }
+
+        stringBuilder
+                .append(NEW_LINE)
+                .append("List").append(secondClassName).append(" items = new ArrayList<>();")
+                .append(NEW_LINE)
+                .append("for (").append(secondClassName).append(" newItem : ").append(firstCharToLowerCase(firstClassName)).append("Data.get").append(firstCharToUpperCase(listName)).append("()) {")
+                .append(NEW_LINE)
+                .append(firstCharToUpperCase(secondClassName)).append(" item = new ").append(firstCharToUpperCase(secondClassName)).append("()").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("if (newItem.get").append(firstCharToUpperCase(firstPropertyNameInSecondClass)).append("() == null) {")
+                .append(NEW_LINE)
+                .append("continue;")
+                .append(NEW_LINE).append("}")
                 .append(NEW_LINE);
 
         return stringBuilder.toString();

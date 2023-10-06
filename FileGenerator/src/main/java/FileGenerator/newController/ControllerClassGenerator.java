@@ -102,7 +102,13 @@ public class ControllerClassGenerator {
                 .append(generateShowUpdateProductFormEndpoint(classesList, firstClassName, secondClassName))
                 .append(DOUBLE_NEW_LINE)
                 .append(generateUpdateProduct(firstClassName, secondClassName, firstClassJSONObject, secondClassJSONObject))
-                .append(DOUBLE_NEW_LINE);
+                .append(DOUBLE_NEW_LINE)
+                .append(generateShowAllProductForm(firstClassName, secondClassName, firstClassJSONObject, secondClassJSONObject))
+                .append(DOUBLE_NEW_LINE)
+                .append(generateAddProduct(firstClassName, secondClassName, firstClassJSONObject, secondClassJSONObject))
+                .append(DOUBLE_NEW_LINE)
+                .append(generateDeleteProduct(firstClassName))
+                .append(NEW_LINE).append(BLOCK_CLOSED);
 
 
         return stringBuilder.toString();
@@ -221,7 +227,7 @@ public class ControllerClassGenerator {
 
         stringBuilder
                 .append(NEW_LINE)
-                .append("List").append(secondClassName).append(" items = new ArrayList<>();")
+                .append("List<").append(secondClassName).append("> items = new ArrayList<>();")
                 .append(NEW_LINE)
                 .append("for (").append(secondClassName).append(" newItem : ").append(firstCharToLowerCase(firstClassName)).append("Data.get").append(firstCharToUpperCase(listName)).append("()) {")
                 .append(NEW_LINE)
@@ -232,6 +238,152 @@ public class ControllerClassGenerator {
                 .append("continue;")
                 .append(NEW_LINE).append("}")
                 .append(NEW_LINE);
+
+        for (Object k : secondClassProperties) {
+            JSONObject classProperty = (JSONObject) k;
+            String propertyName = (String) classProperty.get("name");
+
+            if (firstCharToUpperCase(propertyName).equals(firstClassName)) {
+                continue;
+            }
+
+            stringBuilder
+                    .append("item.set").append(firstCharToUpperCase(propertyName)).append("(newItem.get").append(firstCharToUpperCase(propertyName)).append("());")
+                    .append(NEW_LINE);
+        }
+
+        stringBuilder
+                .append("item.set").append(firstCharToUpperCase(firstClassName)).append("(updated").append(firstCharToUpperCase(firstClassName)).append(");")
+                .append(NEW_LINE)
+                .append("items.add(item);")
+                .append(NEW_LINE).append(BLOCK_CLOSED).append(NEW_LINE)
+                .append("update").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(listName)).append("(items)").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append(firstCharToLowerCase(firstClassName)).append("Service.update").append(firstCharToUpperCase(firstClassName)).append("(updated").append(firstCharToUpperCase(firstClassName)).append(");")
+                .append(DOUBLE_NEW_LINE)
+                .append("return \"redirect:/").append(firstCharToLowerCase(firstClassName)).append("s\";")
+                .append(NEW_LINE)
+                .append(BLOCK_CLOSED);
+
+        return stringBuilder.toString();
+    }
+
+    public static String generateShowAllProductForm(String firstClassName, String secondClassName, JSONObject firstClassJSONObject, JSONObject secondClassJSONObject) {
+        StringBuilder stringBuilder = new StringBuilder();
+        JSONArray firstClassProperties =  (JSONArray) firstClassJSONObject.get("properties");
+        String listName = null;
+
+        for (Object o : firstClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+
+            if (classProperty.containsKey("mapField")) {
+                listName = (String) classProperty.get("name");
+            }
+        }
+
+        stringBuilder
+                .append("@GetMapping(\"/add\")")
+                .append(NEW_LINE)
+                .append("public String showAdd").append(firstCharToUpperCase(firstClassName)).append("Form(Model model) {")
+                .append(NEW_LINE)
+                .append(firstCharToUpperCase(firstClassName)).append(" new").append(firstCharToUpperCase(firstClassName)).append(" = new ").append(firstCharToUpperCase(firstClassName)).append("()").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("new").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(listName)).append("(new ArrayList<>());")
+                .append(NEW_LINE)
+                .append("new").append(firstCharToUpperCase(firstClassName)).append(".get").append(firstCharToUpperCase(listName)).append("().add(new ").append(firstCharToUpperCase(secondClassName)).append("());")
+                .append(NEW_LINE)
+                .append("model.addAttribute(\"new").append(firstCharToUpperCase(firstClassName)).append("\", new").append(firstCharToUpperCase(firstClassName)).append(");")
+                .append(NEW_LINE)
+                .append("return \"add").append(firstCharToUpperCase(firstClassName)).append("\"").append(END_STATEMENT)
+                .append(NEW_LINE).append(BLOCK_CLOSED);
+
+        return stringBuilder.toString();
+    }
+
+    public static String generateAddProduct(String firstClassName, String secondClassName, JSONObject firstClassJSONObject, JSONObject secondClassJSONObject) {
+        StringBuilder stringBuilder = new StringBuilder();
+        JSONArray firstClassProperties =  (JSONArray) firstClassJSONObject.get("properties");
+        JSONArray secondClassProperties =  (JSONArray) secondClassJSONObject.get("properties");
+        JSONObject singleProperty = (JSONObject) secondClassProperties.get(0);
+        String firstPropertyNameInSecondClass = (String) singleProperty.get("name");
+        String listName = null;
+
+        stringBuilder
+                .append("@PostMapping(\"/add\")")
+                .append(NEW_LINE)
+                .append("public String add").append(firstCharToUpperCase(firstClassName)).append("(@ModelAttribute ").append(firstCharToUpperCase(firstClassName)).append(SPACE).append(firstCharToLowerCase(firstClassName)).append("Data) {")
+                .append(DOUBLE_NEW_LINE)
+                .append(firstCharToUpperCase(firstClassName)).append(" new").append(firstCharToUpperCase(firstClassName)).append(" = new ").append(firstCharToUpperCase(firstClassName)).append("();")
+                .append(NEW_LINE);
+
+        for (Object o : firstClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+
+            if (classProperty.containsKey("mapField")) {
+                listName = (String) classProperty.get("name");
+                continue;
+            }
+            stringBuilder
+                    .append("new").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(propertyName)).append("(").append(firstCharToLowerCase(firstClassName)).append("Data.get").append(firstCharToUpperCase(propertyName)).append("());")
+                    .append(NEW_LINE);
+        }
+
+        stringBuilder
+                .append(NEW_LINE)
+                .append("List<").append(secondClassName).append("> items = new ArrayList<>();")
+                .append(NEW_LINE)
+                .append("for (").append(secondClassName).append(" newItem : ").append(firstCharToLowerCase(firstClassName)).append("Data.get").append(firstCharToUpperCase(listName)).append("()) {")
+                .append(NEW_LINE)
+                .append(firstCharToUpperCase(secondClassName)).append(" item = new ").append(firstCharToUpperCase(secondClassName)).append("()").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append("if (newItem.get").append(firstCharToUpperCase(firstPropertyNameInSecondClass)).append("() == null) {")
+                .append(NEW_LINE)
+                .append("continue;")
+                .append(NEW_LINE).append("}")
+                .append(NEW_LINE);
+
+        for (Object k : secondClassProperties) {
+            JSONObject classProperty = (JSONObject) k;
+            String propertyName = (String) classProperty.get("name");
+
+            if (firstCharToUpperCase(propertyName).equals(firstClassName)) {
+                continue;
+            }
+
+            stringBuilder
+                    .append("item.set").append(firstCharToUpperCase(propertyName)).append("(newItem.get").append(firstCharToUpperCase(propertyName)).append("());")
+                    .append(NEW_LINE);
+        }
+
+        stringBuilder
+                .append("item.set").append(firstCharToUpperCase(firstClassName)).append("(new").append(firstCharToUpperCase(firstClassName)).append(");")
+                .append(NEW_LINE)
+                .append("items.add(item);")
+                .append(NEW_LINE).append(BLOCK_CLOSED).append(NEW_LINE)
+                .append("new").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(listName)).append("(items)").append(END_STATEMENT)
+                .append(NEW_LINE)
+                .append(firstCharToLowerCase(firstClassName)).append("Service.add").append(firstCharToUpperCase(firstClassName)).append("(new").append(firstCharToUpperCase(firstClassName)).append(");")
+                .append(DOUBLE_NEW_LINE)
+                .append("return \"redirect:/").append(firstCharToLowerCase(firstClassName)).append("s\";")
+                .append(NEW_LINE).append(BLOCK_CLOSED);
+
+        return stringBuilder.toString();
+    }
+
+    public static String generateDeleteProduct(String firstClassName) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("@GetMapping(\"/delete/{id}\")")
+                .append(NEW_LINE)
+                .append("public String delete").append(firstCharToUpperCase(firstClassName)).append("(@PathVariable Long id) {")
+                .append(NEW_LINE)
+                .append(firstCharToLowerCase(firstClassName)).append("Service.delete").append(firstCharToUpperCase(firstClassName)).append("(id)").append(END_STATEMENT)
+                .append(DOUBLE_NEW_LINE)
+                .append("return \"redirect:/").append(firstCharToLowerCase(firstClassName)).append("s\";")
+                .append(NEW_LINE).append(BLOCK_CLOSED);
 
         return stringBuilder.toString();
     }

@@ -20,12 +20,15 @@ public class AddingTemplateGenerator {
     @SneakyThrows
     public static String generateAddProductTemplate(JSONObject jsonObject) {
         StringBuilder stringBuilder = new StringBuilder();
-        JSONParser parser = new JSONParser();
         String projectName = jsonObject.get("projectName").toString();
 
         JSONArray classesList = (JSONArray) jsonObject.get("classes");
-        JSONObject firstClassJSONObject = (JSONObject) parser.parse(classesList.get(0).toString());
+
+        JSONObject firstClassJSONObject = (JSONObject) classesList.get(0);
         String firstClassName = firstClassJSONObject.get("name").toString();
+
+        JSONObject secondClassJSONObject = (JSONObject) classesList.get(1);
+        String secondClassName = secondClassJSONObject.get("name").toString();
 
         stringBuilder
                 .append("<!DOCTYPE html>")
@@ -34,8 +37,8 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append(generateHeadPart(firstClassName))
                 .append(NEW_LINE)
-                .append(generateBodyPart(classesList))
-                .append(DOUBLE_NEW_LINE)
+                .append(generateBodyPart(firstClassName))
+                .append(DOUBLE_NEW_LINE);
 
         System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
@@ -63,10 +66,27 @@ public class AddingTemplateGenerator {
 
     }
 
-    public static String generateBodyPart(JSONArray classesList) {
+    public static String generateBodyPart(String firstClassName) {
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder
+                .append("<body>")
+                .append(NEW_LINE)
+                .append("<h2> Add").append(firstCharToUpperCase(firstClassName)).append("</h2>")
+                .append(NEW_LINE)
+                .append("<form th:action=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s/add}\" method=\"post\">")
+                .append(NEW_LINE);
+
+
+
         return stringBuilder.toString();
+    }
+
+    public static String firstCharToLowerCase(String property) {
+        return property.substring(0, 1).toLowerCase() + property.substring(1);
+    }
+    public static String firstCharToUpperCase(String property) {
+        return property.substring(0, 1).toUpperCase() + property.substring(1);
     }
 
 }

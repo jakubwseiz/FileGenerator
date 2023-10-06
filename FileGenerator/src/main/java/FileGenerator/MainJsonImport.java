@@ -19,6 +19,7 @@ import static FileGenerator.newController.ControllerClassGenerator.generateContr
 import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
 import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
+import static FileGenerator.newTemplatesContent.AddingTemplateGenerator.generateAddProductTemplate;
 import static FileGenerator.newTemplatesContent.ProductTemplateGenerator.generateProductTemplate;
 
 
@@ -72,8 +73,12 @@ public class MainJsonImport {
 //        generateProductTemplate(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 
+//        System.out.println("--------- Generating classes ---------");
+//        generateControllerClass(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+
         System.out.println("--------- Generating classes ---------");
-        generateControllerClass(jsonObject);
+        generateAddProductTemplate(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
     }
 }

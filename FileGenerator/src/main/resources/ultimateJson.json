@@ -1,0 +1,44 @@
+{
+  "projectName": "Mój Projekt",
+  "classes": [
+    {
+      "name": "Invoices",
+      "properties": [
+        {
+          "name": "invoiceName",
+          "type": "String"
+        },
+        {
+          "name": "date",
+          "type": "LocalDate"
+        },
+        {
+          "name": "amount",
+          "type": "Float"
+        },
+        {
+          "name": "items",
+          "type": "List<InvoiceItem>",
+          "mapField": "invoice"
+        }
+      ]
+    },
+    {
+      "name": "InvoiceItem",
+      "properties": [
+        {
+          "name": "itemName",
+          "type": "String"
+        },
+        {
+          "name": "itemAmount",
+          "type": "Float"
+        },
+        {
+          "name": "invoice",
+          "type":
+        }
+      ]
+    }
+  ]
+}

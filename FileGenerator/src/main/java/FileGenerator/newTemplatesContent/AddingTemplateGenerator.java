@@ -37,8 +37,9 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append(generateHeadPart(firstClassName))
                 .append(NEW_LINE)
-                .append(generateBodyPart(firstClassName))
-                .append(DOUBLE_NEW_LINE);
+                .append(generateBodyPart(firstClassName, firstClassJSONObject, secondClassName, secondClassJSONObject))
+                .append(NEW_LINE)
+                .append("</html>");
 
         System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
@@ -66,8 +67,11 @@ public class AddingTemplateGenerator {
 
     }
 
-    public static String generateBodyPart(String firstClassName) {
+    public static String generateBodyPart(String firstClassName, JSONObject firstClassJSONObject, String secondClassName, JSONObject secondClassJSONObject) {
         StringBuilder stringBuilder = new StringBuilder();
+
+        JSONArray firstClassProperties = (JSONArray) firstClassJSONObject.get("properties");
+        String listName = null;
 
         stringBuilder
                 .append("<body>")
@@ -76,6 +80,44 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append("<form th:action=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s/add}\" method=\"post\">")
                 .append(NEW_LINE);
+
+        for (Object o : firstClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+            String propertyType = (String) classProperty.get("type");
+
+            if (classProperty.containsKey("mapField")) {
+                listName = (String) classProperty.get("name");
+                continue;
+            }
+            stringBuilder
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append("<div class=\"form-group\">")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append(BIG_SPACE).append("<label for=\"").append(firstCharToLowerCase(propertyName)).append("\" class=\"narrow-input\">").append(firstCharToUpperCase(propertyName)).append("</label>")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append(BIG_SPACE).append("<input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control narrow-input\" id=\"").append(firstCharToLowerCase(propertyName)).append("\" name=\"").append(firstCharToLowerCase(propertyName)).append("\" required>")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append("</div>");
+        }
+
+        stringBuilder
+                .append(DOUBLE_NEW_LINE)
+                .append(BIG_SPACE).append("<h3>").append(firstCharToUpperCase(listName)).append("</h3>")
+                .append(NEW_LINE)
+                .append(BIG_SPACE).append("<div id=\"items-container\"></div>")
+                .append(NEW_LINE)
+                .append(BIG_SPACE).append("<button type=\"button\" class=\"btn btn-primary\" onclick=\"addItem()>\"Add ").append(firstCharToUpperCase(secondClassName)).append("</button>")
+                .append(NEW_LINE)
+                .append(BIG_SPACE).append("<button type=\"submit\" class=\"btn btn-success\">Save ").append(firstCharToUpperCase(firstClassName)).append("</button>")
+                .append(NEW_LINE)
+                .append("</form>")
+                .append(NEW_LINE)
+                .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\" class=\"mt-2\">Back to ").append(firstCharToUpperCase(firstClassName)).append("s</a>")
+                .append(NEW_LINE)
+                .append(generateScriptPart(secondClassJSONObject, firstClassName))
+                .append(NEW_LINE)
+                .append("</body>");
 
 
 
@@ -87,6 +129,72 @@ public class AddingTemplateGenerator {
     }
     public static String firstCharToUpperCase(String property) {
         return property.substring(0, 1).toUpperCase() + property.substring(1);
+    }
+
+    public static String generateFieldType(String propertyType) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        if (propertyType.equals("LocalDate")) {
+            stringBuilder.append("date");
+        } else if (propertyType.equals("Float") || propertyType.equals("Integer") || propertyType.equals("Long") || propertyType.equals("Decimal") || propertyType.equals("Short")) {
+            stringBuilder.append("number");
+        } else {
+            stringBuilder.append("text");
+        }
+
+        return stringBuilder.toString();
+    }
+
+    public static String generateScriptPart(JSONObject secondClassJSONObject, String firstClassName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        JSONArray secondClassProperties =  (JSONArray) secondClassJSONObject.get("properties");
+
+        stringBuilder
+                .append("""
+                        <script th:inline="javascript">
+                            var itemCounter = 0;
+                                                
+                            function addItem() {
+                                var itemRow = document.createElement("div");
+                                itemRow.className = "item-row";
+                                itemRow.innerHTML = `
+                        """);
+
+        for (Object o : secondClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+            String propertyType = (String) classProperty.get("type");
+
+            if (classProperty.containsKey(firstCharToLowerCase(firstClassName))) {
+                continue;
+            }
+
+            stringBuilder
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<div class=\"form-group\">")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<label for=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" class=\"narrow-input\">").append(firstCharToUpperCase(propertyName)).append("</label>")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control narrow-input\" id=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required>")
+                    .append(NEW_LINE)
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("</div>")
+                    .append(NEW_LINE);
+
+        }
+
+        stringBuilder
+                .append("""
+                                    <button type="button" class="btn btn-danger" onclick="removeItem(this)">Remove</button>
+                                `;
+                                document.getElementById("items-container").appendChild(itemRow);
+                                itemCounter++;
+                            }
+                                                
+                            function removeItem(button) {
+                                button.parentNode.remove();
+                            }
+                        </script>
+                        """);
+        return stringBuilder.toString();
     }
 
 }

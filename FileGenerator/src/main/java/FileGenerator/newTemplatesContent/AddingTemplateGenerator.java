@@ -136,7 +136,7 @@ public class AddingTemplateGenerator {
 
         if (propertyType.equals("LocalDate")) {
             stringBuilder.append("date");
-        } else if (propertyType.equals("Float") || propertyType.equals("Integer") || propertyType.equals("Long") || propertyType.equals("Decimal") || propertyType.equals("Short")) {
+        } else if (propertyType.equals("Float") || propertyType.equals("Integer") || propertyType.equals("Long") || propertyType.equals("Decimal") || propertyType.equals("Short") || propertyType.equals("Double")) {
             stringBuilder.append("number");
         } else {
             stringBuilder.append("text");

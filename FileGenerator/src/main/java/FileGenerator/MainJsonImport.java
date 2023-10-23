@@ -22,6 +22,7 @@ import static FileGenerator.newService.ServiceClassGenerator.generateServiceClas
 import static FileGenerator.newTemplatesContent.AddingTemplateGenerator.generateAddProductTemplate;
 import static FileGenerator.newTemplatesContent.AllProductsTemplateGenerator.generateAllProductsTemplate;
 import static FileGenerator.newTemplatesContent.ProductTemplateGenerator.generateProductTemplate;
+import static FileGenerator.newTemplatesContent.UpdateProductClassGenerator.generateUpdateProductTemplate;
 
 
 public class MainJsonImport {
@@ -82,8 +83,12 @@ public class MainJsonImport {
 //        generateAddProductTemplate(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 
+//        System.out.println("--------- Generating classes ---------");
+//        generateAllProductsTemplate(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+
         System.out.println("--------- Generating classes ---------");
-        generateAllProductsTemplate(jsonObject);
+        generateUpdateProductTemplate(jsonObject);
         System.out.println("--------- Finished generating classes ---------");
     }
 }

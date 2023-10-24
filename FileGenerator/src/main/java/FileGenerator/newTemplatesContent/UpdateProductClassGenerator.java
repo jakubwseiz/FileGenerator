@@ -33,7 +33,8 @@ public class UpdateProductClassGenerator {
                 .append(NEW_LINE)
                 .append(generateHeadPart(firstClassName))
                 .append(generateBodyPart(firstClassName, firstClassJSONObject, secondClassName, secondClassJSONObject))
-                .append(NEW_LINE);
+                .append(NEW_LINE)
+                .append("</html>");
 
         System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
@@ -145,7 +146,12 @@ public class UpdateProductClassGenerator {
                 .append(BIG_SPACE).append("<button type=\"submit\" class=\"btn btn-success\">Save Changes</button>")
                 .append(NEW_LINE)
                 .append("</form>")
-                .append(DOUBLE_NEW_LINE);
+                .append(DOUBLE_NEW_LINE)
+                .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\">Back to ").append(firstCharToUpperCase(firstClassName)).append("</a>")
+                .append(NEW_LINE)
+                .append(generateScriptPart(firstClassName, secondClassProperties))
+                .append(NEW_LINE)
+                .append("</body>");
 
         return stringBuilder.toString();
     }
@@ -160,6 +166,52 @@ public class UpdateProductClassGenerator {
         } else {
             stringBuilder.append("text");
         }
+
+        return stringBuilder.toString();
+    }
+
+    private static String generateScriptPart(String firstClassName, JSONArray secondClassProperties) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("<script th:inline=\"javascript\">")
+                .append(NEW_LINE)
+                .append(BIG_SPACE).append("var itemCounter = /*[[${itemsSize}]]*/;")
+                .append(DOUBLE_NEW_LINE)
+                .append("""
+                        function removeItem(button) {
+                            var row = button.parentNode.parentNode;
+                            row.parentNode.removeChild(row);
+                        }
+                        function addItem() {
+                            itemCounter++;
+                            var itemRow = document.createElement("tr");
+                            itemRow.className = "item-row";
+                            itemRow.innerHTML = `
+                            <tr>
+                        """);
+
+        for (Object o : secondClassProperties) {
+            JSONObject classProperty = (JSONObject) o;
+            String propertyName = (String) classProperty.get("name");
+            String propertyType = (String) classProperty.get("type");
+
+            if (firstCharToUpperCase(propertyName).equals(firstClassName)) {
+                continue;
+            }
+            stringBuilder
+                    .append(BIG_SPACE).append(BIG_SPACE).append("<td><input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control\" id=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required/></td>")
+                    .append(NEW_LINE);
+        }
+
+        stringBuilder
+                .append("""
+                                <td><button type="button" class="btn btn-danger" onclick="removeItem(this)">Remove</button></td>
+                            </tr>
+                            `;
+                            document.getElementById("itemsTable").appendChild(itemRow);
+                            }
+                        </script>""");
 
         return stringBuilder.toString();
     }

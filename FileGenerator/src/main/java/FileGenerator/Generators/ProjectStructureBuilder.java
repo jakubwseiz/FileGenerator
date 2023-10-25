@@ -1,5 +1,10 @@
 package FileGenerator.Generators;
 
+import lombok.SneakyThrows;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -14,16 +19,37 @@ import static FileGenerator.FilesContent.RepositoryContent.getRepositoryContent;
 import static FileGenerator.FilesContent.ProductItemRepositoryContent.getProductItemRepositoryContent;
 import static FileGenerator.FilesContent.ServiceContent.getServiceContent;
 import static FileGenerator.FilesContent.StartContent.getStartContent;
+import static FileGenerator.Generators.PropertiesGenerator.generateProperties;
+import static FileGenerator.Repository.RepositryClassGenerator.generateRepositoryClass;
 import static FileGenerator.TempaltesContent.ProductTemplate.getInvoiceTemplateContent;
 import static FileGenerator.TempaltesContent.ListOfProductsTemplate.getInvoicesTemplateContent;
 import static FileGenerator.TempaltesContent.AddProductTemplate.getAddInvoiceTemplateContent;
 import static FileGenerator.TempaltesContent.UpdateProductTemplate.getUpdateInvoiceTemplateContent;
-
+import static FileGenerator.newController.ControllerClassGenerator.generateControllerClass;
+import static FileGenerator.newEntity.EntityClassGenerator.generateFirstClass;
+import static FileGenerator.newEntity.EntityClassGenerator.generateSecondClass;
+import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
+import static FileGenerator.newStartClassGenerator.StartClassGenerator.generateStartClassContent;
+import static FileGenerator.newTemplatesContent.AddingTemplateGenerator.generateAddProductTemplate;
+import static FileGenerator.newTemplatesContent.AllProductsTemplateGenerator.generateAllProductsTemplate;
+import static FileGenerator.newTemplatesContent.ProductTemplateGenerator.generateProductTemplate;
+import static FileGenerator.newTemplatesContent.UpdateProductClassGenerator.generateUpdateProductTemplate;
 
 public class ProjectStructureBuilder {
-    public static void buildProjectStructure(String projectPath) {
+    @SneakyThrows
+    public static void buildProjectStructure(String projectPathhh, JSONObject jsonObject) {
 
-        //String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\NazwaProjektu";
+        String projectName = jsonObject.get("projectName").toString();
+        JSONParser parser = new JSONParser();
+
+        String projectPath = "C:\\Users\\Kozlos\\Desktop\\Inżynierka\\"+ projectName;
+
+        JSONArray classesList = (JSONArray) jsonObject.get("classes");
+        JSONObject firstClassJSONObject = (JSONObject) parser.parse(classesList.get(0).toString());
+        String firstClassName = firstClassJSONObject.get("name").toString();
+
+        JSONObject secondClassJSONObject = (JSONObject) classesList.get(1);
+        String secondClassName = secondClassJSONObject.get("name").toString();
 
         try {
             // Tworzenie katalogu głównego projektu
@@ -35,10 +61,10 @@ public class ProjectStructureBuilder {
             createDirectory(projectPath + "/src/main/java");
             createDirectory(projectPath + "/src/main/java/com");
             createDirectory(projectPath + "/src/main/java/com/myCompany");
-            createDirectory(projectPath + "/src/main/java/com/myCompany/ProjectName/Controllers");
-            createDirectory(projectPath + "/src/main/java/com/myCompany/ProjectName/Models");
-            createDirectory(projectPath + "/src/main/java/com/myCompany/ProjectName/Service");
-            createDirectory(projectPath + "/src/main/java/com/myCompany/ProjectName/Repository");
+            createDirectory(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Controllers");
+            createDirectory(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models");
+            createDirectory(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Services");
+            createDirectory(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Repository");
             createDirectory(projectPath + "/src/main/resources");
             createDirectory(projectPath + "/src/main/resources/static");
             createDirectory(projectPath + "/src/main/resources/templates");
@@ -47,25 +73,24 @@ public class ProjectStructureBuilder {
             createDirectory(projectPath + "/target");
 
             // Dodawanie klas do odpowiednich katalogów
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Controllers", "ThymeleafController", getControllerContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Models", "Invoice", getModelContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Models", "InvoiceItem", getModelItemsContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Service", "InvoiceService", getServiceContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Repository", "InvoiceRepository", getRepositoryContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName/Repository", "InvoiceItemRepository", getProductItemRepositoryContent());
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/ProjectName", "Start", getStartContent());
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Controllers", firstClassName + "Controller", generateControllerClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models", firstClassName, generateFirstClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models", firstClassName + "Item", generateSecondClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Services", firstClassName + "Service", generateServiceClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Repository", firstClassName + "Repository", generateRepositoryClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/"+ projectName, "Start", generateStartClassContent(jsonObject));
 
-            createHtmlFile(projectPath + "/src/main/resources/templates","invoice", getInvoiceTemplateContent());
-            createHtmlFile(projectPath + "/src/main/resources/templates","invoices", getInvoicesTemplateContent());
-            createHtmlFile(projectPath + "/src/main/resources/templates","addInvoice", getAddInvoiceTemplateContent());
-            createHtmlFile(projectPath + "/src/main/resources/templates","updateInvoice", getUpdateInvoiceTemplateContent());
-
+            createHtmlFile(projectPath + "/src/main/resources/templates",firstClassName, generateProductTemplate(jsonObject));
+            createHtmlFile(projectPath + "/src/main/resources/templates",firstClassName + "s", generateAllProductsTemplate(jsonObject));
+            createHtmlFile(projectPath + "/src/main/resources/templates","add" + firstClassName, generateAddProductTemplate(jsonObject));
+            createHtmlFile(projectPath + "/src/main/resources/templates","update" + firstClassName, generateUpdateProductTemplate(jsonObject));
 
             System.out.println("Struktura projektu została zbudowana w: " + projectPath);
         } catch (IOException e) {
             System.err.println("Błąd podczas tworzenia struktury projektu: " + e.getMessage());
         }
         PomXmlGenerator.generatePomXml(projectPath);
+        PropertiesGenerator.generateProperties(projectPath);
     }
 
     private static void createDirectory(String directoryPath) throws IOException {

@@ -23,7 +23,7 @@ public class ControllerClassGenerator {
         JSONArray classesList = (JSONArray) jsonObject.get("classes");
 
         classContent
-                .append("package com.example.").append(projectName).append(".Controllers").append(END_STATEMENT)
+                .append("package com.myCompany.").append(projectName).append(".Controllers").append(END_STATEMENT)
                 .append(DOUBLE_NEW_LINE)
                 .append(generateControllerImport(jsonObject))
                 .append(generateControllerContent(classesList));
@@ -51,12 +51,12 @@ public class ControllerClassGenerator {
             JSONArray properties = (JSONArray) classJSONObject.get("properties");
 
             stringBuilder
-                    .append("import com.example.").append(projectName).append(".Entities.").append(className).append(END_STATEMENT)
+                    .append("import com.myCompany.").append(projectName).append(".Models.").append(className).append(END_STATEMENT)
                     .append(NEW_LINE);
         }
 
         stringBuilder
-                .append("import com.example.").append(projectName).append(".Services.").append(firstClassName).append("Service").append(END_STATEMENT)
+                .append("import com.myCompany.").append(projectName).append(".Services.").append(firstClassName).append("Service").append(END_STATEMENT)
                 .append("""
                         import org.springframework.beans.factory.annotation.*;
                         import org.springframework.boot.Banner;
@@ -93,7 +93,7 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append("@Autowired")
                 .append(NEW_LINE)
-                .append("private ").append(firstClassName).append("Service").append(END_STATEMENT)
+                .append("private ").append(firstClassName).append("Service ").append(firstCharToLowerCase(firstClassName)).append("Service").append(END_STATEMENT)
                 .append(DOUBLE_NEW_LINE)
                 .append(generateGetAllProductEndpoint(firstClassName))
                 .append(DOUBLE_NEW_LINE)
@@ -131,9 +131,9 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append("List<").append(firstClassName).append("> ").append(firstCharToLowerCase(firstClassName)).append("s = ").append(firstCharToLowerCase(firstClassName)).append("Service.getAll").append(firstClassName).append("s();")
                 .append(NEW_LINE)
-                .append("model.addAttribute(\"").append(firstCharToLowerCase(firstClassName)).append("s\", ").append(firstCharToLowerCase(firstClassName)).append(");")
+                .append("model.addAttribute(\"").append(firstCharToLowerCase(firstClassName)).append("s\", ").append(firstCharToLowerCase(firstClassName)).append("s);")
                 .append(NEW_LINE)
-                .append("return ").append(firstCharToLowerCase(firstClassName)).append("s;")
+                .append("return \"").append(firstCharToLowerCase(firstClassName)).append("s\";")
                 .append(NEW_LINE).append(BLOCK_CLOSED);
 
         return stringBuilder.toString();
@@ -147,11 +147,11 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append("public String get").append(firstClassName).append("ById(@PathVariable Long id, Model model) {")
                 .append(NEW_LINE)
-                .append(firstClassName).append(firstCharToLowerCase(firstClassName)).append(" ").append(firstCharToLowerCase(firstClassName)).append(" = ").append(firstCharToLowerCase(firstClassName)).append("Service").append(".get").append(firstClassName).append("ById(id);")
+                .append(firstClassName).append(SPACE).append(firstCharToLowerCase(firstClassName)).append(" = ").append(firstCharToLowerCase(firstClassName)).append("Service").append(".get").append(firstClassName).append("ById(id);")
                 .append(NEW_LINE)
-                .append("model.addAttribute(\"").append(firstCharToLowerCase(firstClassName)).append("s\", ").append(firstCharToLowerCase(firstClassName)).append(");")
+                .append("model.addAttribute(\"").append(firstCharToLowerCase(firstClassName)).append("\", ").append(firstCharToLowerCase(firstClassName)).append(");")
                 .append(NEW_LINE)
-                .append("return ").append(firstCharToLowerCase(firstClassName)).append("s;")
+                .append("return \"").append(firstCharToLowerCase(firstClassName)).append("\";")
                 .append(NEW_LINE).append(BLOCK_CLOSED);
 
         return stringBuilder.toString();

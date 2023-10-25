@@ -28,7 +28,7 @@ public class ServiceClassGenerator {
                 JSONArray classesList = (JSONArray) jsonObject.get("classes");
 
                 classContent
-                        .append("package com.example.").append(projectName).append(".Services").append(END_STATEMENT)
+                        .append("package com.myCompany.").append(projectName).append(".Services").append(END_STATEMENT)
                         .append(DOUBLE_NEW_LINE)
                         .append(generateServiceImport(jsonObject))
                         .append(NEW_LINE)
@@ -47,17 +47,13 @@ public class ServiceClassGenerator {
                 JSONParser parser = new JSONParser();
 
                 String projectName = jsonObject.get("projectName").toString();
-
-                //Classes
                 JSONArray classesList = (JSONArray) jsonObject.get("classes");
-                for (Object c : classesList)
-                {
-                        JSONObject classJSONObject = (JSONObject) parser.parse(c.toString());
-                        String className = classJSONObject.get("name").toString();
-                        JSONArray properties = (JSONArray) classJSONObject.get("properties");
 
-                        stringBuilder.append(generateImportForEntity(projectName, className));
-                }
+                JSONObject firstClassJSONObject = (JSONObject) parser.parse(classesList.get(0).toString());
+                String firstClassName = firstClassJSONObject.get("name").toString();
+
+                stringBuilder.append(generateImportForEntity(projectName, firstClassName));
+
                 stringBuilder
                         .append("import org.springframework.beans.factory.annotation.*;")
                         .append(NEW_LINE)
@@ -73,9 +69,9 @@ public class ServiceClassGenerator {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 stringBuilder
-                        .append("import com.example.").append(projectName).append(".Entities.").append(className).append(END_STATEMENT)
+                        .append("import com.myCompany.").append(projectName).append(".Models.").append(className).append(END_STATEMENT)
                         .append(NEW_LINE)
-                        .append("import com.example.").append(projectName).append(".Repository.").append(className).append("Repository").append(END_STATEMENT)
+                        .append("import com.myCompany.").append(projectName).append(".Repository.").append(className).append("Repository").append(END_STATEMENT)
                         .append(NEW_LINE);
                 return  stringBuilder.toString();
         }
@@ -102,23 +98,30 @@ public class ServiceClassGenerator {
 
                 return stringBuilder.toString();
         }
-
-        public static String generateProperties(JSONArray jsonArray) {
+        @SneakyThrows
+        public static String generateProperties(JSONArray classesList) {
                 StringBuilder stringBuilder = new StringBuilder();
+                JSONParser parser = new JSONParser();
 
-                for (Object array : jsonArray) {
-                        JSONObject classes = (JSONObject) array;
-                        stringBuilder
-                                .append("@Autowired")
-                                .append(NEW_LINE)
-                                .append("private ").append(classes.get("name")).append("Repository").append(SPACE).append(firstCharToLowerCase(classes.get("name").toString())).append("Repository").append(END_STATEMENT)
-                                .append(DOUBLE_NEW_LINE);
-                }
+                JSONObject firstClassJSONObject = (JSONObject) parser.parse(classesList.get(0).toString());
+                String firstClassName = firstClassJSONObject.get("name").toString();
+
+
+                stringBuilder
+                        .append("@Autowired")
+                        .append(NEW_LINE)
+                        .append("private ").append(firstClassName).append("Repository").append(SPACE).append(firstCharToLowerCase(firstClassName)).append("Repository").append(END_STATEMENT)
+                        .append(DOUBLE_NEW_LINE);
+
                 return stringBuilder.toString();
         }
 
         public static String firstCharToLowerCase(String property) {
                 return property.substring(0, 1).toLowerCase() + property.substring(1);
+        }
+
+        public static String firstCharToUpperCase(String property) {
+                return property.substring(0, 1).toUpperCase() + property.substring(1);
         }
 
         public static String generateServiceMethods(JSONArray jsonArray) {
@@ -135,11 +138,11 @@ public class ServiceClassGenerator {
                 stringBuilder
                         .append("public List<").append(className).append(">").append(" getAll").append(className).append("s() ").append(BLOCK_OPEN).append(" return ").append(firstCharToLowerCase(className)).append("Repository.findAll(); ").append(BLOCK_CLOSED)
                         .append(DOUBLE_NEW_LINE)
-                        .append("public ").append(className).append(" get").append(className).append(" ById (Long id) ").append(BLOCK_OPEN).append(" return ").append(firstCharToLowerCase(className)).append("Repository.findById(id).orElse(null);").append(BLOCK_CLOSED)
+                        .append("public ").append(className).append(" get").append(className).append("ById (Long id) ").append(BLOCK_OPEN).append(" return ").append(firstCharToLowerCase(className)).append("Repository.findById(id).orElse(null);").append(BLOCK_CLOSED)
                         .append(DOUBLE_NEW_LINE)
-                        .append("public ").append(className).append(" add").append(className).append("(").append(className).append(SPACE).append(firstCharToLowerCase(className)).append(" { return ").append(firstCharToLowerCase(className)).append("Repository.save(").append(className).append("); }")
+                        .append("public ").append(className).append(" add").append(className).append("(").append(className).append(SPACE).append(firstCharToLowerCase(className)).append(") { return ").append(firstCharToLowerCase(className)).append("Repository.save(").append(firstCharToLowerCase(className)).append("); }")
                         .append(DOUBLE_NEW_LINE)
-                        .append("public ").append(className).append(" update").append(className).append("(").append(className).append(" updated").append(className).append(") { return ").append(firstCharToLowerCase(className)).append("Repository.save(").append(firstCharToLowerCase(className)).append("; }")
+                        .append("public ").append(className).append(" update").append(className).append("(").append(className).append(" updated").append(className).append(") { return ").append(firstCharToLowerCase(className)).append("Repository.save(").append("updated").append(firstCharToUpperCase(className)).append("); }")
                         .append(DOUBLE_NEW_LINE)
                         .append("public void delete").append(className).append("(Long id) { ").append(firstCharToLowerCase(className)).append("Repository.findById(id); }")
                         .append(DOUBLE_NEW_LINE);

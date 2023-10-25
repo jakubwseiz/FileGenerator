@@ -6,10 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import static FileGenerator.newEntity.EntityImportGenerator.generateEntityImportContent;
 
@@ -149,30 +146,54 @@ public class EntityClassGenerator {
     }
 
     @SneakyThrows
-    public static String generateRealClass(JSONObject jsonObject) {
+    public static String generateFirstClass(JSONObject jsonObject) {
         StringBuilder classContent = new StringBuilder();
         JSONParser parser = new JSONParser();
 
         String projectName = jsonObject.get("projectName").toString();
-
         //Classes
         JSONArray classesList = (JSONArray) jsonObject.get("classes");
-        for (Object c : classesList)
-        {
-            gettersAndSetters = new StringBuilder();
-            properties = new StringBuilder();
-            JSONObject classJSONObject = (JSONObject) parser.parse(c.toString());
-            String className = classJSONObject.get("name").toString();
-            JSONArray properties = (JSONArray) classJSONObject.get("properties");
-            generateClass(projectName, className, properties);
-            //TODO: save class to file
-        }
+
+        JSONObject firstClassJSONObject = (JSONObject) parser.parse(classesList.get(0).toString());
+
+        gettersAndSetters = new StringBuilder();
+        properties = new StringBuilder();
+        JSONObject classJSONObject = (JSONObject) parser.parse(firstClassJSONObject.toString());
+        String className = classJSONObject.get("name").toString();
+        JSONArray properties = (JSONArray) classJSONObject.get("properties");
+
+        classContent
+                .append(generateClass(projectName, className, properties));
+
+        return classContent.toString();
+    }
+
+    @SneakyThrows
+    public static String generateSecondClass(JSONObject jsonObject) {
+        StringBuilder classContent = new StringBuilder();
+        JSONParser parser = new JSONParser();
+
+        String projectName = jsonObject.get("projectName").toString();
+        //Classes
+        JSONArray classesList = (JSONArray) jsonObject.get("classes");
+
+        JSONObject secondClassJSONObject = (JSONObject) parser.parse(classesList.get(1).toString());
+
+        gettersAndSetters = new StringBuilder();
+        properties = new StringBuilder();
+        JSONObject classJSONObject = (JSONObject) parser.parse(secondClassJSONObject.toString());
+        String className = classJSONObject.get("name").toString();
+        JSONArray properties = (JSONArray) classJSONObject.get("properties");
+        generateClass(projectName, className, properties);
+
+        classContent
+                .append(generateClass(projectName, className, properties));
 
         return classContent.toString();
     }
 
     public static String generateClass(String projectName, String className, JSONArray jsonProperties) {
-        String packageName = "package com.example."+ projectName + ".Entities";
+        String packageName = "package com.myCompany."+ projectName + ".Models";
         String classDeclaration = declareClass(className, packageName);
         addIdProperty();
         generateProperties(jsonProperties,className);

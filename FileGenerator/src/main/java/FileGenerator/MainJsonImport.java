@@ -1,28 +1,17 @@
 package FileGenerator;
 
-import java.io.File;
 import java.io.FileReader;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.io.IOException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import static FileGenerator.Repository.RepositryClassGenerator.generateRepositoryClass;
-import static FileGenerator.newController.ControllerClassGenerator.generateControllerClass;
-import static FileGenerator.newEntity.EntityClassGenerator.generateClass;
-import static FileGenerator.newEntity.EntityClassGenerator.generateRealClass;
-import static FileGenerator.newService.ServiceClassGenerator.generateServiceClass;
-import static FileGenerator.newTemplatesContent.AddingTemplateGenerator.generateAddProductTemplate;
-import static FileGenerator.newTemplatesContent.AllProductsTemplateGenerator.generateAllProductsTemplate;
-import static FileGenerator.newTemplatesContent.ProductTemplateGenerator.generateProductTemplate;
-import static FileGenerator.newTemplatesContent.UpdateProductClassGenerator.generateUpdateProductTemplate;
+import static FileGenerator.Generators.ProjectStructureBuilder.buildProjectStructure;
+import static FileGenerator.newEntity.EntityClassGenerator.generateFirstClass;
+import static FileGenerator.newEntity.EntityClassGenerator.generateSecondClass;
 
 
 public class MainJsonImport {
@@ -54,12 +43,16 @@ public class MainJsonImport {
             e.printStackTrace();
             System.out.println("Błąd podczas importowania pliku JSON: " + e.getMessage());
         }
+        buildProjectStructure(filePath, jsonObject);
+//
 
-//        //generateClass(jsonObject);
+        //generateClass();
 //        System.out.println("--------- Generating classes ---------");
-//        generateRealClass(jsonObject);
+//        generateFirstClass(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 //
+//        generateSecondClass(jsonObject);
+////
 //        //generate Service class
 //        System.out.println("--------- Generating classes ---------");
 //        generateServiceClass(jsonObject);
@@ -87,9 +80,13 @@ public class MainJsonImport {
 //        generateAllProductsTemplate(jsonObject);
 //        System.out.println("--------- Finished generating classes ---------");
 
-        System.out.println("--------- Generating classes ---------");
-        generateUpdateProductTemplate(jsonObject);
-        System.out.println("--------- Finished generating classes ---------");
+//        System.out.println("--------- Generating classes ---------");
+//        generateUpdateProductTemplate(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
+
+//        System.out.println("--------- Generating classes ---------");
+//        generateStartClassContent(jsonObject);
+//        System.out.println("--------- Finished generating classes ---------");
     }
 }
 

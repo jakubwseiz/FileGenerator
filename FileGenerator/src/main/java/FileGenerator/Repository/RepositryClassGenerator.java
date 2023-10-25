@@ -23,7 +23,7 @@ public class RepositryClassGenerator {
         JSONArray classesList = (JSONArray) jsonObject.get("classes");
 
         classContent
-                .append("package com.example.").append(projectName).append("Repository").append(END_STATEMENT)
+                .append("package com.myCompany.").append(projectName).append(".Repository").append(END_STATEMENT)
                 .append(DOUBLE_NEW_LINE)
                 .append(generateRepositoryImport(jsonObject))
                 .append(generateRepositoryContent(classesList));
@@ -49,7 +49,7 @@ public class RepositryClassGenerator {
         }
 
         stringBuilder
-                .append("import comm.example.").append(projectName).append(".Entities.").append(className).append(END_STATEMENT)
+                .append("import com.myCompany.").append(projectName).append(".Models.").append(className).append(END_STATEMENT)
                 .append(NEW_LINE)
                 .append("import org.springframework.data.jpa.repository.JpaRepository;")
                 .append(NEW_LINE)

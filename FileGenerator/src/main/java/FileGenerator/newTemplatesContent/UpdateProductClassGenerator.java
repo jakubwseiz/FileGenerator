@@ -74,7 +74,7 @@ public class UpdateProductClassGenerator {
                 .append(NEW_LINE)
                 .append("<h1>Update ").append(firstCharToUpperCase(firstClassName)).append("</h1>")
                 .append(DOUBLE_NEW_LINE)
-                .append("<form th:action=\"@{/").append(firstCharToLowerCase(firstClassName)).append("/update/{id}(id=${update").append(firstCharToUpperCase(firstClassName)).append(".id})}\" th:object=\"${update").append(firstCharToUpperCase(firstClassName)).append("}\" method=\"post\">")
+                .append("<form th:action=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s/update/{id}(id=${update").append(firstCharToUpperCase(firstClassName)).append(".id})}\" th:object=\"${update").append(firstCharToUpperCase(firstClassName)).append("}\" method=\"post\">")
                 .append(NEW_LINE)
                 .append(BIG_SPACE).append("<input type=\"hidden\" th:field=\"*{id}\"/>")
                 .append(NEW_LINE);
@@ -147,7 +147,7 @@ public class UpdateProductClassGenerator {
                 .append(NEW_LINE)
                 .append("</form>")
                 .append(DOUBLE_NEW_LINE)
-                .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\">Back to ").append(firstCharToUpperCase(firstClassName)).append("</a>")
+                .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\">Back to ").append(firstCharToUpperCase(firstClassName)).append("s</a>")
                 .append(NEW_LINE)
                 .append(generateScriptPart(firstClassName, secondClassProperties))
                 .append(NEW_LINE)

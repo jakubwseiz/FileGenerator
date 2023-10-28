@@ -107,7 +107,7 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append(BIG_SPACE).append("<div id=\"items-container\"></div>")
                 .append(NEW_LINE)
-                .append(BIG_SPACE).append("<button type=\"button\" class=\"btn btn-primary\" onclick=\"addItem()>\"Add ").append(firstCharToUpperCase(secondClassName)).append("</button>")
+                .append(BIG_SPACE).append("<button type=\"button\" class=\"btn btn-primary\" onclick=\"addItem()\">Add ").append(firstCharToUpperCase(secondClassName)).append("</button>")
                 .append(NEW_LINE)
                 .append(BIG_SPACE).append("<button type=\"submit\" class=\"btn btn-success\">Save ").append(firstCharToUpperCase(firstClassName)).append("</button>")
                 .append(NEW_LINE)
@@ -165,7 +165,7 @@ public class AddingTemplateGenerator {
             String propertyName = (String) classProperty.get("name");
             String propertyType = (String) classProperty.get("type");
 
-            if (classProperty.containsKey(firstCharToLowerCase(firstClassName))) {
+            if (propertyName.equals(firstCharToLowerCase(firstClassName))) {
                 continue;
             }
 

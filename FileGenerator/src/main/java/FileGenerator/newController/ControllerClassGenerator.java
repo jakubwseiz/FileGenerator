@@ -207,7 +207,7 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append("public String update").append(firstClassName).append("(@PathVariable Long id, @ModelAttribute(\"update").append(firstClassName).append("\") ").append(firstClassName).append(SPACE).append(firstCharToLowerCase(firstClassName)).append("Data) {")
                 .append(DOUBLE_NEW_LINE)
-                .append(firstClassName).append(" update").append(firstClassName).append(" = new ").append(firstClassName).append("()").append(END_STATEMENT)
+                .append(firstClassName).append(" updated").append(firstClassName).append(" = new ").append(firstClassName).append("()").append(END_STATEMENT)
                 .append(NEW_LINE)
                 .append("updated").append(firstClassName).append(".setId(id);")
                 .append(NEW_LINE);
@@ -257,7 +257,7 @@ public class ControllerClassGenerator {
                 .append(NEW_LINE)
                 .append("items.add(item);")
                 .append(NEW_LINE).append(BLOCK_CLOSED).append(NEW_LINE)
-                .append("update").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(listName)).append("(items)").append(END_STATEMENT)
+                .append("updated").append(firstCharToUpperCase(firstClassName)).append(".set").append(firstCharToUpperCase(listName)).append("(items)").append(END_STATEMENT)
                 .append(NEW_LINE)
                 .append(firstCharToLowerCase(firstClassName)).append("Service.update").append(firstCharToUpperCase(firstClassName)).append("(updated").append(firstCharToUpperCase(firstClassName)).append(");")
                 .append(DOUBLE_NEW_LINE)

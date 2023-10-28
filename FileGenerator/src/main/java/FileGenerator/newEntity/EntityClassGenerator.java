@@ -122,7 +122,7 @@ public class EntityClassGenerator {
             case "LocalDate":
                 properties
                         .append(BIG_SPACE)
-                        .append("@DateTimeFormat(pattern = \"yyyy-MM-dd\")").append(METHOD_CLOSED).append(NEW_LINE);
+                        .append("@DateTimeFormat(pattern = \"yyyy-MM-dd\"").append(METHOD_CLOSED).append(NEW_LINE);
             case "List":
             default:
                 return;
@@ -140,14 +140,19 @@ public class EntityClassGenerator {
                 .append("@Id")
                 .append(NEW_LINE).append(BIG_SPACE)
                 .append("@GeneratedValue(strategy = GenerationType.IDENTITY)")
-                .append(NEW_LINE).append(BIG_SPACE)
-                .append("private Long id;").append(NEW_LINE);
+                .append(NEW_LINE).append(BIG_SPACE);
+                //.append("private Long id;").append(NEW_LINE);
 
     }
 
     @SneakyThrows
     public static String generateFirstClass(JSONObject jsonObject) {
         StringBuilder classContent = new StringBuilder();
+
+        JSONObject additionalProperty = new JSONObject();
+        additionalProperty.put("name", "id");
+        additionalProperty.put("type", "Long");
+
         JSONParser parser = new JSONParser();
 
         String projectName = jsonObject.get("projectName").toString();
@@ -162,6 +167,8 @@ public class EntityClassGenerator {
         String className = classJSONObject.get("name").toString();
         JSONArray properties = (JSONArray) classJSONObject.get("properties");
 
+        properties.add(0, additionalProperty);
+
         classContent
                 .append(generateClass(projectName, className, properties));
 
@@ -171,6 +178,11 @@ public class EntityClassGenerator {
     @SneakyThrows
     public static String generateSecondClass(JSONObject jsonObject) {
         StringBuilder classContent = new StringBuilder();
+
+        JSONObject additionalProperty = new JSONObject();
+        additionalProperty.put("name", "id");
+        additionalProperty.put("type", "Long");
+
         JSONParser parser = new JSONParser();
 
         String projectName = jsonObject.get("projectName").toString();
@@ -184,7 +196,9 @@ public class EntityClassGenerator {
         JSONObject classJSONObject = (JSONObject) parser.parse(secondClassJSONObject.toString());
         String className = classJSONObject.get("name").toString();
         JSONArray properties = (JSONArray) classJSONObject.get("properties");
-        generateClass(projectName, className, properties);
+
+        properties.add(0, additionalProperty);
+
 
         classContent
                 .append(generateClass(projectName, className, properties));
@@ -206,6 +220,7 @@ public class EntityClassGenerator {
     @SneakyThrows
     static void generateProperties(JSONArray properties, String className) {
         JSONParser parser = new JSONParser();
+
         for (Object p : properties)
         {
             JSONObject classJSONObject = (JSONObject) parser.parse(p.toString());
@@ -229,6 +244,9 @@ public class EntityClassGenerator {
         StringBuilder constructorString = new StringBuilder();
         StringBuilder constructorInitializationString = new StringBuilder();
         constructorString
+                .append(NEW_LINE)
+                .append(BIG_SPACE).append("public ").append(firstCharToUpperCase(className)).append(METHOD_OPEN).append(METHOD_CLOSED).append(" {}")
+                .append(DOUBLE_NEW_LINE)
                 .append(BIG_SPACE)
                 .append("public ")
                 .append(className)

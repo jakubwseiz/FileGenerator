@@ -6,8 +6,8 @@ public class EntityImportGenerator {
 
 
         return """
-                
                 import com.fasterxml.jackson.annotation.JsonManagedReference;
+                import com.fasterxml.jackson.annotation.JsonBackReference;
                 import jakarta.persistence.Entity;
                 import jakarta.persistence.*;
                 import org.antlr.v4.runtime.misc.NotNull;

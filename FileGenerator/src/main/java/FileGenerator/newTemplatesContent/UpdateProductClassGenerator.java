@@ -36,7 +36,6 @@ public class UpdateProductClassGenerator {
                 .append(NEW_LINE)
                 .append("</html>");
 
-        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -149,7 +148,7 @@ public class UpdateProductClassGenerator {
                 .append(DOUBLE_NEW_LINE)
                 .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\">Back to ").append(firstCharToUpperCase(firstClassName)).append("s</a>")
                 .append(NEW_LINE)
-                .append(generateScriptPart(firstClassName, secondClassProperties))
+                .append(generateScriptPart(firstClassName, secondClassProperties, listName))
                 .append(NEW_LINE)
                 .append("</body>");
 
@@ -170,7 +169,7 @@ public class UpdateProductClassGenerator {
         return stringBuilder.toString();
     }
 
-    private static String generateScriptPart(String firstClassName, JSONArray secondClassProperties) {
+    private static String generateScriptPart(String firstClassName, JSONArray secondClassProperties, String listName) {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder
@@ -200,7 +199,7 @@ public class UpdateProductClassGenerator {
                 continue;
             }
             stringBuilder
-                    .append(BIG_SPACE).append(BIG_SPACE).append("<td><input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control\" id=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required/></td>")
+                    .append(BIG_SPACE).append(BIG_SPACE).append("<td><input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control\" id=\"").append(firstCharToLowerCase(listName)).append("[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"").append(firstCharToLowerCase(listName)).append("[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required/></td>")
                     .append(NEW_LINE);
         }
 

@@ -12,19 +12,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import static FileGenerator.FilesContent.ControllerContent.getControllerContent;
-import static FileGenerator.FilesContent.ModelContent.getModelContent;
-import static FileGenerator.FilesContent.ModelItemsContent.getModelItemsContent;
-import static FileGenerator.FilesContent.RepositoryContent.getRepositoryContent;
-import static FileGenerator.FilesContent.ProductItemRepositoryContent.getProductItemRepositoryContent;
-import static FileGenerator.FilesContent.ServiceContent.getServiceContent;
-import static FileGenerator.FilesContent.StartContent.getStartContent;
 import static FileGenerator.Generators.PropertiesGenerator.generateProperties;
 import static FileGenerator.Repository.RepositryClassGenerator.generateRepositoryClass;
-import static FileGenerator.TempaltesContent.ProductTemplate.getInvoiceTemplateContent;
-import static FileGenerator.TempaltesContent.ListOfProductsTemplate.getInvoicesTemplateContent;
-import static FileGenerator.TempaltesContent.AddProductTemplate.getAddInvoiceTemplateContent;
-import static FileGenerator.TempaltesContent.UpdateProductTemplate.getUpdateInvoiceTemplateContent;
+
 import static FileGenerator.newController.ControllerClassGenerator.generateControllerClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateFirstClass;
 import static FileGenerator.newEntity.EntityClassGenerator.generateSecondClass;
@@ -75,7 +65,7 @@ public class ProjectStructureBuilder {
             // Dodawanie klas do odpowiednich katalogów
             createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Controllers", firstClassName + "Controller", generateControllerClass(jsonObject));
             createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models", firstClassName, generateFirstClass(jsonObject));
-            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models", firstClassName + "Item", generateSecondClass(jsonObject));
+            createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Models", secondClassName, generateSecondClass(jsonObject));
             createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Services", firstClassName + "Service", generateServiceClass(jsonObject));
             createJavaClass(projectPath + "/src/main/java/com/myCompany/" + projectName + "/Repository", firstClassName + "Repository", generateRepositoryClass(jsonObject));
             createJavaClass(projectPath + "/src/main/java/com/myCompany/"+ projectName, "Start", generateStartClassContent(jsonObject));

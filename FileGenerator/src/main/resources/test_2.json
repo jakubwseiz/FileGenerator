@@ -1,0 +1,64 @@
+{
+  "projectName": "CarRent",
+  "classes": [
+    {
+      "name": "Car",
+      "properties": [
+        {
+          "name": "model",
+          "type": "String"
+        },
+        {
+          "name": "creationDate",
+          "type": "LocalDate"
+        },
+        {
+          "name": "numberOfDoors",
+          "type": "int"
+        },
+        {
+          "name": "engineModel",
+          "type": "String"
+        },
+        {
+          "name": "HP",
+          "type": "Long"
+        },
+        {
+          "name": "equipment",
+          "type": "List<Staff>",
+          "mapField": "car"
+        }
+      ]
+    },
+    {
+      "name": "Stuff",
+      "properties": [
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "amount",
+          "type": "int"
+        },
+        {
+          "name": "type",
+          "type": "String"
+        },
+        {
+          "name": "creationDate",
+          "type": "LocalDate"
+        },
+        {
+          "name": "weight",
+          "type": "Double"
+        },
+        {
+          "name": "car",
+          "type": "Car"
+        }
+      ]
+    }
+  ]
+}

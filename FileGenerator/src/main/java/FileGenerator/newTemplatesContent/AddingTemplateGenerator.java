@@ -41,7 +41,6 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append("</html>");
 
-        System.out.println(stringBuilder.toString());
         return stringBuilder.toString();
     }
 
@@ -115,7 +114,7 @@ public class AddingTemplateGenerator {
                 .append(NEW_LINE)
                 .append("<a th:href=\"@{/").append(firstCharToLowerCase(firstClassName)).append("s}\" class=\"mt-2\">Back to ").append(firstCharToUpperCase(firstClassName)).append("s</a>")
                 .append(NEW_LINE)
-                .append(generateScriptPart(secondClassJSONObject, firstClassName))
+                .append(generateScriptPart(secondClassJSONObject, firstClassName, listName))
                 .append(NEW_LINE)
                 .append("</body>");
 
@@ -145,7 +144,7 @@ public class AddingTemplateGenerator {
         return stringBuilder.toString();
     }
 
-    public static String generateScriptPart(JSONObject secondClassJSONObject, String firstClassName) {
+    public static String generateScriptPart(JSONObject secondClassJSONObject, String firstClassName, String listName) {
         StringBuilder stringBuilder = new StringBuilder();
         JSONArray secondClassProperties =  (JSONArray) secondClassJSONObject.get("properties");
 
@@ -172,9 +171,9 @@ public class AddingTemplateGenerator {
             stringBuilder
                     .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<div class=\"form-group\">")
                     .append(NEW_LINE)
-                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<label for=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" class=\"narrow-input\">").append(firstCharToUpperCase(propertyName)).append("</label>")
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<label for=\"").append(firstCharToLowerCase(listName)).append("[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" class=\"narrow-input\">").append(firstCharToUpperCase(propertyName)).append("</label>")
                     .append(NEW_LINE)
-                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control narrow-input\" id=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"items[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required>")
+                    .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("<input type=\"").append(generateFieldType(propertyType)).append("\" class=\"form-control narrow-input\" id=\"").append(firstCharToLowerCase(listName)).append("[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" name=\"").append(firstCharToLowerCase(listName)).append("[${itemCounter}].").append(firstCharToLowerCase(propertyName)).append("\" required>")
                     .append(NEW_LINE)
                     .append(BIG_SPACE).append(BIG_SPACE).append(BIG_SPACE).append("</div>")
                     .append(NEW_LINE);

@@ -36,7 +36,7 @@
         },
         {
           "name": "invoice",
-          "type":
+          "type": "Invoice"
         }
       ]
     }

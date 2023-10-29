@@ -73,7 +73,7 @@ public class RepositryClassGenerator {
         stringBuilder
                 .append("@Repository")
                 .append(NEW_LINE)
-                .append("public interface ").append(className).append("Repository").append(" extends JpaRepository<Invoice, Long> {")
+                .append("public interface ").append(className).append("Repository").append(" extends JpaRepository<").append(className).append(", Long> {")
                 .append(NEW_LINE).append(BLOCK_CLOSED);
 
         return stringBuilder.toString();

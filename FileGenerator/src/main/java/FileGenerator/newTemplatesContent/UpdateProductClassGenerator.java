@@ -102,12 +102,12 @@ public class UpdateProductClassGenerator {
                 .append(BIG_SPACE).append(BIG_SPACE).append("<tr>")
                 .append(NEW_LINE);
 
-        for (Object o : firstClassProperties) {
+        for (Object o : secondClassProperties) {
             JSONObject classProperty = (JSONObject) o;
             String propertyName = (String) classProperty.get("name");
             String propertyType = (String) classProperty.get("type");
 
-            if (classProperty.containsKey("mapField")) {
+            if (firstCharToUpperCase(propertyName).equals(firstCharToUpperCase(firstClassName))) {
                 continue;
             }
             stringBuilder

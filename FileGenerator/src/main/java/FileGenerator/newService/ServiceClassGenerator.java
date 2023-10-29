@@ -144,7 +144,7 @@ public class ServiceClassGenerator {
                         .append(DOUBLE_NEW_LINE)
                         .append("public ").append(className).append(" update").append(className).append("(").append(className).append(" updated").append(className).append(") { return ").append(firstCharToLowerCase(className)).append("Repository.save(").append("updated").append(firstCharToUpperCase(className)).append("); }")
                         .append(DOUBLE_NEW_LINE)
-                        .append("public void delete").append(className).append("(Long id) { ").append(firstCharToLowerCase(className)).append("Repository.findById(id); }")
+                        .append("public void delete").append(className).append("(Long id) { ").append(firstCharToLowerCase(className)).append("Repository.deleteById(id); }")
                         .append(DOUBLE_NEW_LINE);
                 return stringBuilder.toString();
         }

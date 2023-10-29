@@ -57,6 +57,7 @@ public class ControllerClassGenerator {
 
         stringBuilder
                 .append("import com.myCompany.").append(projectName).append(".Services.").append(firstClassName).append("Service").append(END_STATEMENT)
+                .append(NEW_LINE)
                 .append("""
                         import org.springframework.beans.factory.annotation.*;
                         import org.springframework.boot.Banner;

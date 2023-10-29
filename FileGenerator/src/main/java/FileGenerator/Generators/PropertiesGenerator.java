@@ -28,6 +28,9 @@ public class PropertiesGenerator {
                         # Konfiguracja Hibernate
                         spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
                         spring.jpa.hibernate.ddl-auto=update
+                        
+                        # Port serwera
+                        server.port=8080
                         """);
 
         try {

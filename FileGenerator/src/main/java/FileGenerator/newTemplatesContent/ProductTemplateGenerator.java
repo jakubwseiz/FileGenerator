@@ -118,12 +118,13 @@ public class ProductTemplateGenerator {
                         .append("<th>").append(properyJSONObject.get("name")).append(":</th>")
                         .append(NEW_LINE).append(BIG_SPACE)
                         .append("<td th:text=\"${").append(firstCharToLowerCase(className)).append(".").append(properyJSONObject.get("name")).append("}\"></td>")
-                        .append(NEW_LINE).append(SPACE).append("</tr>");
+                        .append(NEW_LINE).append(SPACE).append("</tr>")
+                        .append(NEW_LINE);
             }
 
         }
         stringBuilder
-                .append("/table")
+                .append("</table>")
                 .append(NEW_LINE);
 
         return stringBuilder.toString();
@@ -188,7 +189,7 @@ public class ProductTemplateGenerator {
                     }
                     stringBuilder
                             .append(NEW_LINE).append(BIG_SPACE)
-                            .append("<td:text=\"$item.").append(secondPropertyName).append("}\"></td>");
+                            .append("<td th:text=\"${item.").append(secondPropertyName).append("}\"></td>");
                 }
             }
         }
